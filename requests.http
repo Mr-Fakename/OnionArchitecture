@@ -1,0 +1,14 @@
+@prefix= Basic
+@token= am9obmRvZUBnbWFpbC5jb206cXdlcnR5
+
+### Create a conference
+POST http://localhost:8000/conference
+Content-Type: application/json
+Authorization: {{prefix}} {{token}}
+
+{
+    "title": "",
+    "seats": 30,
+    "startDate": "2024-10-26T10:00:00.000Z",
+    "endDate": "2024-10-26T11:00:00.000Z"
+}
