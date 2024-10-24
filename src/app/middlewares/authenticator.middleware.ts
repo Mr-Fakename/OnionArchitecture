@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { extractToken } from "../../infrastructure/authenticators/utils/extract-token";
 import { container } from "../../infrastructure/config/dependency-injection";
-import { testUsers } from "../../tests/unit/seeds/seeds-user";
 
 declare module 'express-serve-static-core' {
     interface Request {
@@ -10,9 +9,6 @@ declare module 'express-serve-static-core' {
 }
 
 export const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
-    const userRepository = container('userRepository')
-    await userRepository.create(testUsers.johnDoe)
-    
     try {
         const credentials = req.headers.authorization // Basic am9obmRvZUBnbWFpbC5jb206cXdlcnR5
 

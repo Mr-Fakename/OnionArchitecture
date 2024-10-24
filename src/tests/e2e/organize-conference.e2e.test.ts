@@ -16,6 +16,10 @@ describe('Usecase: Organize Conference', () => {
         app = testApp.expressApp
     })
 
+    afterAll(async() => {
+        testApp.tearDown()
+    })
+
     it('should organize a conference', async () => {
         const response = await request(app)
                                 .post('/conference')

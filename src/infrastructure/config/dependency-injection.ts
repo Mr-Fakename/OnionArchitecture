@@ -1,16 +1,23 @@
 import { asClass, asFunction, createContainer } from "awilix";
 import { IAuthenticator } from "../../interfaces/authenticator.interface";
+import { IBookingRepository } from "../../interfaces/booking-repository.interface";
 import { IConferenceRepository } from "../../interfaces/conference-repository.interface";
 import { IDateGenerator } from "../../interfaces/date-generator.interface";
 import { IIDGenerator } from "../../interfaces/id-generator.interface";
 import { IUserRepository } from "../../interfaces/user-repository.interface";
 import { CurrentDateGenerator } from "../../shared/utils/current-date-generator";
 import { RandomIDGenerator } from "../../shared/utils/random-id-generator";
+import { InMemoryBookingRepository } from "../../tests/in-memory/in-memory-booking-repository";
 import { InMemoryConferenceRepository } from "../../tests/in-memory/in-memory-conference-repository";
-import { InMemoryUserRepository } from "../../tests/in-memory/in-memory-user-repository";
+import { InMemoryMailer } from "../../tests/in-memory/in-memory-mailer";
+import { ChangeDates } from "../../usecases/change-dates";
 import { ChangeSeats } from "../../usecases/change-seats";
 import { OrganizeConference } from "../../usecases/organize-conference";
 import { BasicAuthenticator } from "../authenticators/basic-authenticator";
+import { MongoUser } from "../database/mongo/mongo-user";
+import { MongoUserRepository } from "../database/mongo/mongo-user-repository";
+import { MongoConferenceRepository } from "../database/mongo/mongo-conference-repository";
+import { MongoConference } from "../database/mongo/mongo-conference";
 
 export interface Dependencies {
     conferenceRepository: IConferenceRepository
@@ -20,16 +27,21 @@ export interface Dependencies {
     authenticator: IAuthenticator
     organizeConferenceUsecase: OrganizeConference
     changeSeatsUsecase: ChangeSeats
+    mailer: InMemoryMailer
+    changeDatesUsecase: ChangeDates
+    bookingRepository: IBookingRepository
 }
 
 const container = createContainer<Dependencies>()
 
 container.register({
-    conferenceRepository: asClass(InMemoryConferenceRepository).singleton(),
-    userRepository: asClass(InMemoryUserRepository).singleton(),
     idGenerator: asClass(RandomIDGenerator).singleton(),
     dateGenerator: asClass(CurrentDateGenerator).singleton(),
-
+    mailer: asClass(InMemoryMailer).singleton(),
+    bookingRepository: asClass(InMemoryBookingRepository).singleton(),
+    
+    conferenceRepository: asFunction(() => new MongoConferenceRepository(MongoConference.ConferenceModel)).singleton(),
+    userRepository: asFunction(() => new MongoUserRepository(MongoUser.UserModel)).singleton(),
     authenticator: asFunction(
         ({userRepository}) => new BasicAuthenticator(userRepository)
     ).singleton(),
@@ -39,6 +51,9 @@ container.register({
     ).singleton(),
     changeSeatsUsecase: asFunction(
         ({conferenceRepository}) => new ChangeSeats(conferenceRepository)
+    ).singleton(),
+    changeDatesUsecase: asFunction(
+        ({conferenceRepository, mailer, bookingRepository, userRepository, dateGenerator}) => new ChangeDates(conferenceRepository, mailer, bookingRepository, userRepository, dateGenerator)
     ).singleton()
 })
 

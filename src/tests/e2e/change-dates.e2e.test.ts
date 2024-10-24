@@ -1,4 +1,5 @@
 
+import { addDays, addHours } from 'date-fns'
 import { Application } from 'express'
 import request from 'supertest'
 import { container } from '../../infrastructure/config/dependency-injection'
@@ -6,9 +7,11 @@ import { testConferences } from '../unit/seeds/seeds-conference'
 import { e2eConferences } from './seeds/conference-e2e-seed'
 import { e2eUsers } from './seeds/user-e2e-seed'
 import { TestApp } from './utils/test-app'
+import { e2eBookings } from './seeds/booking-e2e-seed'
 
-describe('Usecase: Change Seats', () => {
+describe('Usecase: Change Dates', () => {
     const conferenceRepository = container('conferenceRepository')
+    const mailer = container('mailer')
 
     let testApp: TestApp
     let app: Application
@@ -18,7 +21,9 @@ describe('Usecase: Change Seats', () => {
         await testApp.setup()
         await testApp.loadFixtures([
             e2eConferences.conference,
-            e2eUsers.johnDoe
+            e2eUsers.johnDoe,
+            e2eUsers.alice,
+            e2eBookings.aliceBooking
         ])
         app = testApp.expressApp
     })
@@ -27,12 +32,15 @@ describe('Usecase: Change Seats', () => {
         testApp.tearDown()
     })
 
-    it('should change the number of seats', async () => {
+    it('should change the dates', async () => {
+        const startDate = addDays(new Date(), 4)
+        const endDate = addDays(addHours(new Date(), 2), 4)
+
         const response = await request(app)
-                                .patch(`/conference/${testConferences.conference.props.id}`)
+                                .patch(`/conference/${testConferences.conference.props.id}/dates`)
                                 .set('Authorization', e2eUsers.johnDoe.createAuthorizationToken())
                                 .send({
-                                    seats: 100,
+                                    startDate, endDate
                                 })
         
         expect(response.status).toEqual(200)
@@ -40,6 +48,9 @@ describe('Usecase: Change Seats', () => {
         const fetchedConference = await conferenceRepository.findById(testConferences.conference.props.id)
 
         expect(fetchedConference).toBeDefined()
-        expect(fetchedConference!.props.seats).toEqual(100)
+        expect(fetchedConference!.props.startDate).toEqual(startDate)
+        expect(fetchedConference!.props.endDate).toEqual(endDate)
+
+        expect(mailer.sentEmails).toHaveLength(1)
     })
 })
