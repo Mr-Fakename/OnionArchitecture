@@ -3,18 +3,22 @@ import { FixedDateGenerator } from "../fixed/fixed-date-generator"
 import { FixedIDGenerator } from "../fixed/fixed-id-generator"
 import { InMemoryConferenceRepository } from "../in-memory/in-memory-conference-repository"
 import { testUsers } from "./seeds/seeds-user"
+import {InMemoryPublisher} from "../../tests/in-memory/in-memory-publisher";
+import {testConferences} from "../../tests/unit/seeds/seeds-conference";
 
 describe('Usecase: Organize a conference', () => {
     let repository: InMemoryConferenceRepository
     let idGenerator: FixedIDGenerator
     let dateGenerator: FixedDateGenerator
     let usecase: OrganizeConference
+    let messageBroker: InMemoryPublisher
 
     beforeEach(() => {
         repository = new InMemoryConferenceRepository()
         idGenerator = new FixedIDGenerator()
         dateGenerator = new FixedDateGenerator()
-        usecase = new OrganizeConference(repository, idGenerator, dateGenerator)
+        messageBroker = new InMemoryPublisher()
+        usecase = new OrganizeConference(repository, idGenerator, dateGenerator, messageBroker)
     })
 
 
@@ -37,6 +41,18 @@ describe('Usecase: Organize a conference', () => {
             const fetchedConference = repository.database[0]
             expect(repository.database).toHaveLength(1)
             expect(fetchedConference.props.title).toEqual('Nouvelle conference')
+        })
+
+        it ('should publish a message', async () => {
+            await usecase.execute(payload)
+            const messages = messageBroker.getMessages('conference-organized')
+            expect(messages).toHaveLength(1)
+            expect(messages[0]).toEqual({
+                conferenceId: expect.any(String),
+                organizerEmail: testUsers.johnDoe.props.email,
+                title: testConferences.conference.props.title,
+                seats: testConferences.conference.props.seats
+            })
         })
     })
 

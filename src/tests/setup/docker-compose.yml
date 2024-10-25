@@ -9,3 +9,8 @@ services:
       TZ: Europe/Paris
     ports:
       - '3702:27017'
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"

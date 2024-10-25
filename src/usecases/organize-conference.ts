@@ -3,6 +3,7 @@ import { User } from "../domain/entities/user.entity"
 import { IConferenceRepository } from "../interfaces/conference-repository.interface"
 import { IDateGenerator } from "../interfaces/date-generator.interface"
 import { IIDGenerator } from "../interfaces/id-generator.interface"
+import {IMessageBroker} from "../interfaces/message-broker.interface";
 
 type OrganizeConferenceRequest = {
     user: User
@@ -20,7 +21,8 @@ export class OrganizeConference {
     constructor(
         private readonly repository: IConferenceRepository,
         private readonly idGenerator: IIDGenerator,
-        private readonly dateGenerator: IDateGenerator
+        private readonly dateGenerator: IDateGenerator,
+        private readonly messageBroker: IMessageBroker
     ) {}
 
     async execute({user, title, startDate, endDate, seats}: OrganizeConferenceRequest) : Promise<OrganizeConferenceResponse> {
@@ -51,8 +53,21 @@ export class OrganizeConference {
             throw new Error("Conference is too long (> 3 hours)")
         }
 
-        await this.repository.create(conference)
+        await this.publishMessage(conference, user)
 
         return { id }
+    }
+
+    private async publishMessage(conference: Conference, user: User): Promise<void> {
+        await this.repository.create(conference)
+
+        if (!this.messageBroker.isConnected()) await this.messageBroker.connect()
+        await this.messageBroker.publish('conference-organized', {
+            conferenceId: conference.props.id,
+            organizerEmail: user.props.email,
+            title: conference.props.title,
+            seats: conference.props.seats
+        })
+        if (this.messageBroker.isConnected()) await this.messageBroker.close()
     }
 }
