@@ -63,3 +63,21 @@ export const changeDates = async (req: Request, res: Response, next: NextFunctio
         next(error);
     }
 };
+
+export const bookConference = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {conferenceId} = req.params
+        const {errors} = req.body
+
+        if(errors) return res.jsonError(errors, 400)
+
+        await container('bookSeatsUsecase').execute({
+            conferenceId: conferenceId,
+            user: req.user
+        })
+
+        return res.jsonSuccess({message: `Conference with id: ${conferenceId} was booked`}, 201)
+    } catch (error) {
+        next(error)
+    }
+};

@@ -19,6 +19,7 @@ import { MongoConferenceRepository } from "../database/mongo/mongo-conference-re
 import { MongoConference } from "../database/mongo/mongo-conference";
 import {IMessageBroker} from "../../interfaces/message-broker.interface";
 import {RabbitMQPublisher} from "../../infrastructure/publisher/rabbitmq-publisher";
+import { BookSeats } from "../../usecases/book-seats";
 
 export interface Dependencies {
     conferenceRepository: IConferenceRepository
@@ -32,6 +33,7 @@ export interface Dependencies {
     changeDatesUsecase: ChangeDates
     bookingRepository: IBookingRepository
     messageBroker: IMessageBroker
+    bookSeatsUsecase: BookSeats
 }
 
 const container = createContainer<Dependencies>()
@@ -58,6 +60,11 @@ container.register({
     ).singleton(),
     changeDatesUsecase: asFunction(
         ({conferenceRepository, mailer, bookingRepository, userRepository, dateGenerator}) => new ChangeDates(conferenceRepository, mailer, bookingRepository, userRepository, dateGenerator)
+    ).singleton(),
+    bookSeatsUsecase: asFunction(
+        ({conferenceRepository, bookingRepository, mailer, userRepository}) => new BookSeats(
+            conferenceRepository, bookingRepository, mailer, userRepository
+        )
     ).singleton()
 })
 
