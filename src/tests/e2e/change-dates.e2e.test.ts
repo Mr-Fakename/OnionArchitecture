@@ -33,7 +33,7 @@ describe('Usecase: Change Dates', () => {
     })
 
     afterAll(async() => {
-        testApp.tearDown()
+        await testApp.tearDown()
     })
 
     it('should change the dates', async () => {

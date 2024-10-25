@@ -17,6 +17,8 @@ import { MongoUser } from "../database/mongo/mongo-user";
 import { MongoUserRepository } from "../database/mongo/mongo-user-repository";
 import { MongoConferenceRepository } from "../database/mongo/mongo-conference-repository";
 import { MongoConference } from "../database/mongo/mongo-conference";
+import { MongoBooking } from "../../infrastructure/database/mongo/mongo-booking";
+import { MongoBookingRepository} from "../../infrastructure/database/mongo/mongo-booking-repository";
 import {IMessageBroker} from "../../interfaces/message-broker.interface";
 import {RabbitMQPublisher} from "../../infrastructure/publisher/rabbitmq-publisher";
 import { BookSeats } from "../../usecases/book-seats";
@@ -42,8 +44,8 @@ container.register({
     idGenerator: asClass(RandomIDGenerator).singleton(),
     dateGenerator: asClass(CurrentDateGenerator).singleton(),
     mailer: asClass(InMemoryMailer).singleton(),
-    bookingRepository: asClass(InMemoryBookingRepository).singleton(),
-    
+
+    bookingRepository: asFunction(() => new MongoBookingRepository(MongoBooking.BookingModel)).singleton(),
     conferenceRepository: asFunction(() => new MongoConferenceRepository(MongoConference.ConferenceModel)).singleton(),
     userRepository: asFunction(() => new MongoUserRepository(MongoUser.UserModel)).singleton(),
     authenticator: asFunction(
