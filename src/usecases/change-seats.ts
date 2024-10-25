@@ -1,6 +1,7 @@
 import { User } from "../domain/entities/user.entity";
 import { IConferenceRepository } from "../interfaces/conference-repository.interface";
 import { IExecutable } from "../interfaces/executable.interface";
+import { IBookingRepository } from "../interfaces/booking-repository.interface";
 
 type ChangeSeatsRequest = {
     user: User
@@ -13,7 +14,8 @@ type ChangeSeatsResponse = void
 export class ChangeSeats implements IExecutable<ChangeSeatsRequest, ChangeSeatsResponse> {
 
     constructor(
-        private readonly repository: IConferenceRepository
+        private readonly repository: IConferenceRepository,
+        private readonly bookingRepository: IBookingRepository
     ) {}
 
     async execute({user, conferenceId, seats}: ChangeSeatsRequest) : Promise<ChangeSeatsResponse> {
@@ -23,6 +25,11 @@ export class ChangeSeats implements IExecutable<ChangeSeatsRequest, ChangeSeatsR
 
         if(!conference.isTheOrganizer(user)) {
             throw new Error("You are not allowed to change this conference")
+        }
+
+        const bookings = await this.bookingRepository.findByConferenceId(conferenceId)
+        if (bookings.length > seats) {
+            throw new Error("Number of seats cannot be inferior to the number of attendees")
         }
 
         conference.update({seats})

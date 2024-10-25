@@ -54,7 +54,7 @@ container.register({
             new OrganizeConference(conferenceRepository, idGenerator, dateGenerator, messageBroker)
     ).singleton(),
     changeSeatsUsecase: asFunction(
-        ({conferenceRepository}) => new ChangeSeats(conferenceRepository)
+        ({conferenceRepository, bookingRepository}) => new ChangeSeats(conferenceRepository, bookingRepository)
     ).singleton(),
     changeDatesUsecase: asFunction(
         ({conferenceRepository, mailer, bookingRepository, userRepository, dateGenerator}) => new ChangeDates(conferenceRepository, mailer, bookingRepository, userRepository, dateGenerator)

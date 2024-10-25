@@ -7,5 +7,9 @@ export const testBookings = {
     aliceBooking: new Booking({
         conferenceId: testConferences.conference.props.id,
         userId: testUsers.alice.props.id
-    })
+    }),
+    bobBooking: new Booking({
+        conferenceId: testConferences.conference.props.id,
+        userId: testUsers.bob.props.id
+    }),
 }
