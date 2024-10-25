@@ -13,6 +13,7 @@ describe('Usecase: Book Conference', () => {
 
     let testApp: TestApp
     let app: Application
+    let authToken: string
 
     beforeEach(async () => {
         testApp = new TestApp()
@@ -23,6 +24,9 @@ describe('Usecase: Book Conference', () => {
             e2eUsers.alice
         ])
         app = testApp.expressApp
+
+        // Generate JWT token for the test user
+        authToken = await testApp.generateAuthToken(e2eUsers.alice)
     })
 
     afterAll(async() => {
@@ -32,7 +36,7 @@ describe('Usecase: Book Conference', () => {
     it('should create a booking', async () => {
         const response = await request(app)
                                 .post(`/conference/${testConferences.conference.props.id}/book`)
-                                .set('Authorization', e2eUsers.alice.createAuthorizationToken())
+                                .set('Authorization', authToken)
                                 .send({
                                     conferenceId: testConferences.conference.props.id,
                                 })

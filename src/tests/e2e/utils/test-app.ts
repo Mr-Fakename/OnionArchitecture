@@ -5,6 +5,7 @@ import { jsonResponseMiddleware } from "../../../app/middlewares/json-response.m
 import { ConferenceRoutes } from "../../../app/routes/conference.routes";
 import { container, ResolveDependency } from "../../../infrastructure/config/dependency-injection";
 import { IFixture } from "./fixture.interface";
+import {UserFixture} from "../../../tests/e2e/fixtures/user-fixture";
 
 export class TestApp {
     private app: Application
@@ -29,6 +30,10 @@ export class TestApp {
 
     async loadFixtures(fixtures: IFixture[]) {
         return Promise.all(fixtures.map(fixture => fixture.load(this.container)))
+    }
+
+    async generateAuthToken(fixture: UserFixture) {
+        return fixture.createAuthorizationToken(this.container)
     }
 
     async tearDown() {

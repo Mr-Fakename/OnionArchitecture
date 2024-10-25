@@ -1,4 +1,3 @@
-
 import { Application } from 'express'
 import request from 'supertest'
 import { container } from '../../infrastructure/config/dependency-injection'
@@ -12,6 +11,7 @@ describe('Usecase: Change Seats', () => {
 
     let testApp: TestApp
     let app: Application
+    let authToken: string
 
     beforeEach(async () => {
         testApp = new TestApp()
@@ -21,20 +21,23 @@ describe('Usecase: Change Seats', () => {
             e2eUsers.johnDoe
         ])
         app = testApp.expressApp
+
+        // Generate JWT token for the test user
+        authToken = await testApp.generateAuthToken(e2eUsers.johnDoe)
     })
 
     afterAll(async() => {
-        testApp.tearDown()
+        await testApp.tearDown()
     })
 
     it('should change the number of seats', async () => {
         const response = await request(app)
-                                .patch(`/conference/${testConferences.conference.props.id}`)
-                                .set('Authorization', e2eUsers.johnDoe.createAuthorizationToken())
-                                .send({
-                                    seats: 100,
-                                })
-        
+            .patch(`/conference/${testConferences.conference.props.id}`)
+            .set('Authorization', authToken)
+            .send({
+                seats: 100,
+            })
+
         expect(response.status).toEqual(200)
 
         const fetchedConference = await conferenceRepository.findById(testConferences.conference.props.id)

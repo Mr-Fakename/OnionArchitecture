@@ -1,6 +1,7 @@
 import { User } from "../../../domain/entities/user.entity";
 import { ResolveDependency } from "../../../infrastructure/config/dependency-injection";
 import { IFixture } from "../utils/fixture.interface";
+import { JWTAuthenticator } from "../../../infrastructure/authenticators/jwt-authenticator";
 
 export class UserFixture implements IFixture {
     constructor(public entity: User) {}
@@ -10,9 +11,12 @@ export class UserFixture implements IFixture {
         await userRepository.create(this.entity)
     }
 
-    createAuthorizationToken() {
-        const token = Buffer.from(`${this.entity.props.email}:${this.entity.props.password}`).toString('base64')
-        return `Basic ${token}`
+    async createAuthorizationToken(container: ResolveDependency) {
+        const authenticator = container('authenticator') as JWTAuthenticator
+        const token = await authenticator.generateToken(
+            this.entity.props.email,
+            this.entity.props.password
+        )
+        return `Bearer ${token}`
     }
-
 }

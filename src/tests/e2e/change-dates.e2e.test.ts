@@ -15,6 +15,7 @@ describe('Usecase: Change Dates', () => {
 
     let testApp: TestApp
     let app: Application
+    let authToken: string
 
     beforeEach(async () => {
         testApp = new TestApp()
@@ -26,6 +27,9 @@ describe('Usecase: Change Dates', () => {
             e2eBookings.aliceBooking
         ])
         app = testApp.expressApp
+
+        // Generate JWT token for the test user
+        authToken = await testApp.generateAuthToken(e2eUsers.johnDoe)
     })
 
     afterAll(async() => {
@@ -38,7 +42,7 @@ describe('Usecase: Change Dates', () => {
 
         const response = await request(app)
                                 .patch(`/conference/${testConferences.conference.props.id}/dates`)
-                                .set('Authorization', e2eUsers.johnDoe.createAuthorizationToken())
+                                .set('Authorization', authToken)
                                 .send({
                                     startDate, endDate
                                 })

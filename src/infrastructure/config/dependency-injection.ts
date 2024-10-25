@@ -12,7 +12,7 @@ import { InMemoryMailer } from "../../tests/in-memory/in-memory-mailer";
 import { ChangeDates } from "../../usecases/change-dates";
 import { ChangeSeats } from "../../usecases/change-seats";
 import { OrganizeConference } from "../../usecases/organize-conference";
-import { BasicAuthenticator } from "../authenticators/basic-authenticator";
+import { JWTAuthenticator } from "../authenticators/jwt-authenticator";
 import { MongoUser } from "../database/mongo/mongo-user";
 import { MongoUserRepository } from "../database/mongo/mongo-user-repository";
 import { MongoConferenceRepository } from "../database/mongo/mongo-conference-repository";
@@ -47,7 +47,7 @@ container.register({
     conferenceRepository: asFunction(() => new MongoConferenceRepository(MongoConference.ConferenceModel)).singleton(),
     userRepository: asFunction(() => new MongoUserRepository(MongoUser.UserModel)).singleton(),
     authenticator: asFunction(
-        ({userRepository}) => new BasicAuthenticator(userRepository)
+        ({userRepository}) => new JWTAuthenticator(userRepository)
     ).singleton(),
     messageBroker: asFunction(() => new RabbitMQPublisher("amqp://localhost")).singleton(),
 

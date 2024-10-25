@@ -11,12 +11,16 @@ describe('Usecase: Organize Conference', () => {
     let app: Application
     let connection: amqp.Connection
     let channel: amqp.Channel
+    let authToken: string
 
     beforeEach(async () => {
         testApp = new TestApp()
         await testApp.setup()
         await testApp.loadFixtures([e2eUsers.johnDoe])
         app = testApp.expressApp
+
+        // Generate JWT token for the test user
+        authToken = await testApp.generateAuthToken(e2eUsers.johnDoe)
 
         connection = await amqp.connect('amqp://localhost')
         channel = await connection.createChannel()
@@ -32,7 +36,7 @@ describe('Usecase: Organize Conference', () => {
     it('should organize a conference', async () => {
         const response = await request(app)
                                 .post('/conference')
-                                .set('Authorization', e2eUsers.johnDoe.createAuthorizationToken())
+                                .set('Authorization', authToken)
                                 .send({
                                     title: "Ma nouvelle conference",
                                     seats: 100,
