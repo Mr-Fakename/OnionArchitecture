@@ -1,4 +1,4 @@
-import { User } from "../../../domain/entities/user.entity";
+import {User} from "../../../domain/entities/user.entity";
 
 export const testUsers = {
     johnDoe: new User({

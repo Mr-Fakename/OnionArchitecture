@@ -1,10 +1,10 @@
-import { Application } from 'express'
+import {Application} from 'express'
 import request from 'supertest'
-import { container } from '../../infrastructure/config/dependency-injection'
-import { testConferences } from '../unit/seeds/seeds-conference'
-import { e2eConferences } from './seeds/conference-e2e-seed'
-import { e2eUsers } from './seeds/user-e2e-seed'
-import { TestApp } from './utils/test-app'
+import {container} from '../../infrastructure/config/dependency-injection'
+import {testConferences} from '../unit/seeds/seeds-conference'
+import {e2eConferences} from './seeds/conference-e2e-seed'
+import {e2eUsers} from './seeds/user-e2e-seed'
+import {TestApp} from './utils/test-app'
 
 describe('Usecase: Book Conference', () => {
     const conferenceRepository = container('conferenceRepository')
@@ -29,17 +29,17 @@ describe('Usecase: Book Conference', () => {
         authToken = await testApp.generateAuthToken(e2eUsers.alice)
     })
 
-    afterAll(async() => {
+    afterAll(async () => {
         await testApp.tearDown()
     })
 
     it('should create a booking', async () => {
         const response = await request(app)
-                                .post(`/conference/${testConferences.conference.props.id}/book`)
-                                .set('Authorization', authToken)
-                                .send({
-                                    conferenceId: testConferences.conference.props.id,
-                                })
+            .post(`/conference/${testConferences.conference.props.id}/book`)
+            .set('Authorization', authToken)
+            .send({
+                conferenceId: testConferences.conference.props.id,
+            })
 
         expect(response.status).toEqual(201)
 

@@ -1,10 +1,10 @@
-import { Application } from 'express'
+import {Application} from 'express'
 import request from 'supertest'
-import { container } from '../../infrastructure/config/dependency-injection'
-import { testConferences } from '../unit/seeds/seeds-conference'
-import { e2eConferences } from './seeds/conference-e2e-seed'
-import { e2eUsers } from './seeds/user-e2e-seed'
-import { TestApp } from './utils/test-app'
+import {container} from '../../infrastructure/config/dependency-injection'
+import {testConferences} from '../unit/seeds/seeds-conference'
+import {e2eConferences} from './seeds/conference-e2e-seed'
+import {e2eUsers} from './seeds/user-e2e-seed'
+import {TestApp} from './utils/test-app'
 
 describe('Usecase: Change Seats', () => {
     const conferenceRepository = container('conferenceRepository')
@@ -26,7 +26,7 @@ describe('Usecase: Change Seats', () => {
         authToken = await testApp.generateAuthToken(e2eUsers.johnDoe)
     })
 
-    afterAll(async() => {
+    afterAll(async () => {
         await testApp.tearDown()
     })
 

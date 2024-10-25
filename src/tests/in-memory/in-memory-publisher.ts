@@ -1,7 +1,7 @@
 import {IMessageBroker} from "../../interfaces/message-broker.interface";
 
 export class InMemoryPublisher implements IMessageBroker {
-    private messages: {queue: string, message: any}[] = [];
+    private messages: { queue: string, message: any }[] = [];
 
     async publish(queue: string, message: any): Promise<void> {
         this.messages.push({queue, message});
@@ -11,7 +11,7 @@ export class InMemoryPublisher implements IMessageBroker {
         return this.messages
             .filter(m => m.queue === queue)
             .map(m => m.message
-        );
+            );
     }
 
     clearMessages(): void {

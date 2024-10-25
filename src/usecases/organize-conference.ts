@@ -1,8 +1,8 @@
-import { Conference } from "../domain/entities/conference.entity"
-import { User } from "../domain/entities/user.entity"
-import { IConferenceRepository } from "../interfaces/conference-repository.interface"
-import { IDateGenerator } from "../interfaces/date-generator.interface"
-import { IIDGenerator } from "../interfaces/id-generator.interface"
+import {Conference} from "../domain/entities/conference.entity"
+import {User} from "../domain/entities/user.entity"
+import {IConferenceRepository} from "../interfaces/conference-repository.interface"
+import {IDateGenerator} from "../interfaces/date-generator.interface"
+import {IIDGenerator} from "../interfaces/id-generator.interface"
 import {IMessageBroker} from "../interfaces/message-broker.interface";
 
 type OrganizeConferenceRequest = {
@@ -23,9 +23,16 @@ export class OrganizeConference {
         private readonly idGenerator: IIDGenerator,
         private readonly dateGenerator: IDateGenerator,
         private readonly messageBroker: IMessageBroker
-    ) {}
+    ) {
+    }
 
-    async execute({user, title, startDate, endDate, seats}: OrganizeConferenceRequest) : Promise<OrganizeConferenceResponse> {
+    async execute({
+                      user,
+                      title,
+                      startDate,
+                      endDate,
+                      seats
+                  }: OrganizeConferenceRequest): Promise<OrganizeConferenceResponse> {
         const id = this.idGenerator.generate()
 
         const conference = new Conference({
@@ -36,26 +43,26 @@ export class OrganizeConference {
             endDate,
             seats
         })
-        
-        if(conference.isTooClose(this.dateGenerator.now())) {
+
+        if (conference.isTooClose(this.dateGenerator.now())) {
             throw new Error("Conference must happen in at least 3 days")
         }
 
-        if(conference.hasNotEnoughSeats()) {
+        if (conference.hasNotEnoughSeats()) {
             throw new Error("Conference has not enough seats")
         }
 
-        if(conference.hasTooManySeats()) {
+        if (conference.hasTooManySeats()) {
             throw new Error("Conference has too many seats")
         }
 
-        if(conference.isTooLong()) {
+        if (conference.isTooLong()) {
             throw new Error("Conference is too long (> 3 hours)")
         }
 
         await this.publishMessage(conference, user)
 
-        return { id }
+        return {id}
     }
 
     private async publishMessage(conference: Conference, user: User): Promise<void> {

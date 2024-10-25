@@ -1,10 +1,10 @@
-import express, { Application } from "express";
+import express, {Application} from "express";
 import mongoose from "mongoose";
-import { errorHandlerMiddleware } from "../../../app/middlewares/error-handler.middleware";
-import { jsonResponseMiddleware } from "../../../app/middlewares/json-response.middleware";
-import { ConferenceRoutes } from "../../../app/routes/conference.routes";
-import { container, ResolveDependency } from "../../../infrastructure/config/dependency-injection";
-import { IFixture } from "./fixture.interface";
+import {errorHandlerMiddleware} from "../../../app/middlewares/error-handler.middleware";
+import {jsonResponseMiddleware} from "../../../app/middlewares/json-response.middleware";
+import {ConferenceRoutes} from "../../../app/routes/conference.routes";
+import {container, ResolveDependency} from "../../../infrastructure/config/dependency-injection";
+import {IFixture} from "./fixture.interface";
 import {UserFixture} from "../../../tests/e2e/fixtures/user-fixture";
 
 export class TestApp {
@@ -14,6 +14,10 @@ export class TestApp {
     constructor() {
         this.app = express()
         this.container = container
+    }
+
+    get expressApp() {
+        return this.app
     }
 
     async setup() {
@@ -38,9 +42,5 @@ export class TestApp {
 
     async tearDown() {
         await mongoose.connection.close()
-    }
-
-    get expressApp() {
-        return this.app
     }
 }

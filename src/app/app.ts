@@ -1,7 +1,7 @@
 import express from 'express'
-import { errorHandlerMiddleware } from './middlewares/error-handler.middleware'
-import { jsonResponseMiddleware } from './middlewares/json-response.middleware'
-import { ConferenceRoutes } from './routes/conference.routes'
+import {errorHandlerMiddleware} from './middlewares/error-handler.middleware'
+import {jsonResponseMiddleware} from './middlewares/json-response.middleware'
+import {ConferenceRoutes} from './routes/conference.routes'
 
 const app = express()
 

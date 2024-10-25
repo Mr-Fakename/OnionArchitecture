@@ -1,13 +1,14 @@
-import { sign, verify } from 'jsonwebtoken'
-import { IAuthenticator } from "../../interfaces/authenticator.interface"
-import { IUserRepository } from "../../interfaces/user-repository.interface"
+import {sign, verify} from 'jsonwebtoken'
+import {IAuthenticator} from "../../interfaces/authenticator.interface"
+import {IUserRepository} from "../../interfaces/user-repository.interface"
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret-key'
 
 export class JWTAuthenticator implements IAuthenticator {
     constructor(
         private readonly userRepository: IUserRepository
-    ) {}
+    ) {
+    }
 
     async authenticate(token: string) {
         try {
@@ -25,10 +26,10 @@ export class JWTAuthenticator implements IAuthenticator {
     async generateToken(email: string, password: string) {
         const user = await this.userRepository.findByEmail(email)
 
-        if(!user || user.props.password !== password) {
+        if (!user || user.props.password !== password) {
             throw new Error("Wrong credentials")
         }
 
-        return sign({ email: user.props.email }, JWT_SECRET, { expiresIn: '24h' })
+        return sign({email: user.props.email}, JWT_SECRET, {expiresIn: '24h'})
     }
 }

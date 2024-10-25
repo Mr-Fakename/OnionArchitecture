@@ -1,8 +1,8 @@
-import { ChangeSeats } from "../../usecases/change-seats"
-import { InMemoryConferenceRepository } from "../in-memory/in-memory-conference-repository"
-import { testConferences } from "./seeds/seeds-conference"
-import { testUsers } from "./seeds/seeds-user"
-import { testBookings } from "./seeds/seeds-booking"
+import {ChangeSeats} from "../../usecases/change-seats"
+import {InMemoryConferenceRepository} from "../in-memory/in-memory-conference-repository"
+import {testConferences} from "./seeds/seeds-conference"
+import {testUsers} from "./seeds/seeds-user"
+import {testBookings} from "./seeds/seeds-booking"
 import {InMemoryBookingRepository} from "../../tests/in-memory/in-memory-booking-repository";
 
 describe('Usecase: Change seats', () => {
@@ -37,7 +37,7 @@ describe('Usecase: Change seats', () => {
             expect(fetchedConference!.props.seats).toEqual(100)
         })
     })
-    
+
     describe('Scenario: Conference does not exist', () => {
         const payload = {
             seats: 100,

@@ -1,11 +1,11 @@
-import { User } from "../domain/entities/user.entity";
-import { IConferenceRepository } from "../interfaces/conference-repository.interface";
-import { IExecutable } from "../interfaces/executable.interface";
-import { IBookingRepository } from "../interfaces/booking-repository.interface";
+import {User} from "../domain/entities/user.entity";
+import {IConferenceRepository} from "../interfaces/conference-repository.interface";
+import {IExecutable} from "../interfaces/executable.interface";
+import {IBookingRepository} from "../interfaces/booking-repository.interface";
 import {Booking} from "../domain/entities/booking.entity";
 import {IMailer} from "../interfaces/mailer.interface";
 import {Conference} from "../domain/entities/conference.entity";
-import { IUserRepository } from "../interfaces/user-repository.interface"
+import {IUserRepository} from "../interfaces/user-repository.interface"
 
 
 type BookingSeatsRequest = {
@@ -15,15 +15,16 @@ type BookingSeatsRequest = {
 
 type BookingSeatsResponse = void
 
-export class BookSeats implements IExecutable<BookingSeatsRequest, BookingSeatsResponse>{
+export class BookSeats implements IExecutable<BookingSeatsRequest, BookingSeatsResponse> {
     constructor(
         private readonly conferenceRepository: IConferenceRepository,
         private readonly bookingRepository: IBookingRepository,
         private readonly mailer: IMailer,
         private readonly userRepository: IUserRepository,
-) {}
+    ) {
+    }
 
-    async execute({ user, conferenceId }: BookingSeatsRequest): Promise<BookingSeatsResponse> {
+    async execute({user, conferenceId}: BookingSeatsRequest): Promise<BookingSeatsResponse> {
         const conference = await this.conferenceRepository.findById(conferenceId);
 
         if (!conference) {
@@ -36,7 +37,7 @@ export class BookSeats implements IExecutable<BookingSeatsRequest, BookingSeatsR
             throw new Error("Not enough seats available");
         }
 
-        const booking = new Booking({ conferenceId, userId: user.props.id });
+        const booking = new Booking({conferenceId, userId: user.props.id});
         await this.bookingRepository.create(booking);
         await this.sendEmailToParticipant(conference, user);
     }

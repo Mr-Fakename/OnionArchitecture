@@ -1,6 +1,6 @@
-import { JWTAuthenticator } from "../../infrastructure/authenticators/jwt-authenticator"
-import { InMemoryUserRepository } from "../in-memory/in-memory-user-repository"
-import { testUsers } from "./seeds/seeds-user"
+import {JWTAuthenticator} from "../../infrastructure/authenticators/jwt-authenticator"
+import {InMemoryUserRepository} from "../in-memory/in-memory-user-repository"
+import {testUsers} from "./seeds/seeds-user"
 
 describe('JWT Authenticator', () => {
     let userRepository: InMemoryUserRepository

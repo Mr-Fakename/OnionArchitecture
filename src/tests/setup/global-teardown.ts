@@ -1,4 +1,4 @@
-import { stopDocker } from "./docker-manager"
+import {stopDocker} from "./docker-manager"
 
 const teardown = async () => {
     await stopDocker()

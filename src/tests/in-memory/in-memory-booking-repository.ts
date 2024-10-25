@@ -1,5 +1,5 @@
-import { Booking } from "../../domain/entities/booking.entity";
-import { IBookingRepository } from "../../interfaces/booking-repository.interface";
+import {Booking} from "../../domain/entities/booking.entity";
+import {IBookingRepository} from "../../interfaces/booking-repository.interface";
 
 export class InMemoryBookingRepository implements IBookingRepository {
     public database: Booking[] = []

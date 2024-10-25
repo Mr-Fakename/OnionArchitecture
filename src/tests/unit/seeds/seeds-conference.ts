@@ -1,5 +1,5 @@
-import { Conference } from "../../../domain/entities/conference.entity";
-import { testUsers } from "./seeds-user";
+import {Conference} from "../../../domain/entities/conference.entity";
+import {testUsers} from "./seeds-user";
 
 
 export const testConferences = {

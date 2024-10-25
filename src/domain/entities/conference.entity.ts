@@ -1,5 +1,5 @@
-import { differenceInDays, differenceInHours } from "date-fns"
-import { User } from "./user.entity"
+import {differenceInDays, differenceInHours} from "date-fns"
+import {User} from "./user.entity"
 
 type ConferenceProps = {
     id: string
@@ -13,7 +13,8 @@ type ConferenceProps = {
 export class Conference {
     constructor(
         public props: ConferenceProps
-    ) {}
+    ) {
+    }
 
     isTooClose(now: Date) {
         return differenceInDays(this.props.startDate, now) < 3

@@ -5,5 +5,6 @@ type UserProps = {
 }
 
 export class User {
-    constructor(public props: UserProps) {}
+    constructor(public props: UserProps) {
+    }
 }

@@ -1,5 +1,5 @@
-import { Email } from "../../domain/value_objects/email";
-import { IMailer } from "../../interfaces/mailer.interface";
+import {Email} from "../../domain/value_objects/email";
+import {IMailer} from "../../interfaces/mailer.interface";
 
 
 export class InMemoryMailer implements IMailer {

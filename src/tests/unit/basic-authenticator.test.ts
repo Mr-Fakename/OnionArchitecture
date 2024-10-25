@@ -1,6 +1,6 @@
-import { BasicAuthenticator } from "../../infrastructure/authenticators/basic-authenticator"
-import { InMemoryUserRepository } from "../in-memory/in-memory-user-repository"
-import { testUsers } from "./seeds/seeds-user"
+import {BasicAuthenticator} from "../../infrastructure/authenticators/basic-authenticator"
+import {InMemoryUserRepository} from "../in-memory/in-memory-user-repository"
+import {testUsers} from "./seeds/seeds-user"
 
 describe('Authenticator', () => {
     let userRepository: InMemoryUserRepository
@@ -18,7 +18,7 @@ describe('Authenticator', () => {
 
         it('should return a user', async () => {
             const user = await authenticator.authenticate(payload)
-    
+
             expect(user!.props).toEqual({
                 id: 'john-doe',
                 email: 'johndoe@gmail.com',

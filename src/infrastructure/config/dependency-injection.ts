@@ -1,27 +1,26 @@
-import { asClass, asFunction, createContainer } from "awilix";
-import { IAuthenticator } from "../../interfaces/authenticator.interface";
-import { IBookingRepository } from "../../interfaces/booking-repository.interface";
-import { IConferenceRepository } from "../../interfaces/conference-repository.interface";
-import { IDateGenerator } from "../../interfaces/date-generator.interface";
-import { IIDGenerator } from "../../interfaces/id-generator.interface";
-import { IUserRepository } from "../../interfaces/user-repository.interface";
-import { CurrentDateGenerator } from "../../shared/utils/current-date-generator";
-import { RandomIDGenerator } from "../../shared/utils/random-id-generator";
-import { InMemoryBookingRepository } from "../../tests/in-memory/in-memory-booking-repository";
-import { InMemoryMailer } from "../../tests/in-memory/in-memory-mailer";
-import { ChangeDates } from "../../usecases/change-dates";
-import { ChangeSeats } from "../../usecases/change-seats";
-import { OrganizeConference } from "../../usecases/organize-conference";
-import { JWTAuthenticator } from "../authenticators/jwt-authenticator";
-import { MongoUser } from "../database/mongo/mongo-user";
-import { MongoUserRepository } from "../database/mongo/mongo-user-repository";
-import { MongoConferenceRepository } from "../database/mongo/mongo-conference-repository";
-import { MongoConference } from "../database/mongo/mongo-conference";
-import { MongoBooking } from "../../infrastructure/database/mongo/mongo-booking";
-import { MongoBookingRepository} from "../../infrastructure/database/mongo/mongo-booking-repository";
+import {asClass, asFunction, createContainer} from "awilix";
+import {IAuthenticator} from "../../interfaces/authenticator.interface";
+import {IBookingRepository} from "../../interfaces/booking-repository.interface";
+import {IConferenceRepository} from "../../interfaces/conference-repository.interface";
+import {IDateGenerator} from "../../interfaces/date-generator.interface";
+import {IIDGenerator} from "../../interfaces/id-generator.interface";
+import {IUserRepository} from "../../interfaces/user-repository.interface";
+import {CurrentDateGenerator} from "../../shared/utils/current-date-generator";
+import {RandomIDGenerator} from "../../shared/utils/random-id-generator";
+import {InMemoryMailer} from "../../tests/in-memory/in-memory-mailer";
+import {ChangeDates} from "../../usecases/change-dates";
+import {ChangeSeats} from "../../usecases/change-seats";
+import {OrganizeConference} from "../../usecases/organize-conference";
+import {JWTAuthenticator} from "../authenticators/jwt-authenticator";
+import {MongoUser} from "../database/mongo/mongo-user";
+import {MongoUserRepository} from "../database/mongo/mongo-user-repository";
+import {MongoConferenceRepository} from "../database/mongo/mongo-conference-repository";
+import {MongoConference} from "../database/mongo/mongo-conference";
+import {MongoBooking} from "../../infrastructure/database/mongo/mongo-booking";
+import {MongoBookingRepository} from "../../infrastructure/database/mongo/mongo-booking-repository";
 import {IMessageBroker} from "../../interfaces/message-broker.interface";
 import {RabbitMQPublisher} from "../../infrastructure/publisher/rabbitmq-publisher";
-import { BookSeats } from "../../usecases/book-seats";
+import {BookSeats} from "../../usecases/book-seats";
 
 export interface Dependencies {
     conferenceRepository: IConferenceRepository
@@ -61,7 +60,13 @@ container.register({
         ({conferenceRepository, bookingRepository}) => new ChangeSeats(conferenceRepository, bookingRepository)
     ).singleton(),
     changeDatesUsecase: asFunction(
-        ({conferenceRepository, mailer, bookingRepository, userRepository, dateGenerator}) => new ChangeDates(conferenceRepository, mailer, bookingRepository, userRepository, dateGenerator)
+        ({
+             conferenceRepository,
+             mailer,
+             bookingRepository,
+             userRepository,
+             dateGenerator
+         }) => new ChangeDates(conferenceRepository, mailer, bookingRepository, userRepository, dateGenerator)
     ).singleton(),
     bookSeatsUsecase: asFunction(
         ({conferenceRepository, bookingRepository, mailer, userRepository}) => new BookSeats(
@@ -72,8 +77,8 @@ container.register({
 
 export type ResolveDependency = <K extends keyof Dependencies>(key: K) => Dependencies[K]
 
-const resolveDependency = <K extends keyof Dependencies>(key: K) : Dependencies[K] => {
+const resolveDependency = <K extends keyof Dependencies>(key: K): Dependencies[K] => {
     return container.resolve<K>(key)
 }
 
-export { resolveDependency as container };
+export {resolveDependency as container};

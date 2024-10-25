@@ -1,5 +1,5 @@
-import { Conference } from "../../domain/entities/conference.entity";
-import { IConferenceRepository } from "../../interfaces/conference-repository.interface";
+import {Conference} from "../../domain/entities/conference.entity";
+import {IConferenceRepository} from "../../interfaces/conference-repository.interface";
 
 
 export class InMemoryConferenceRepository implements IConferenceRepository {

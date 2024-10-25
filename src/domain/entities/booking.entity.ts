@@ -4,5 +4,6 @@ type BookingProps = {
 }
 
 export class Booking {
-    constructor(public props: BookingProps) {}
+    constructor(public props: BookingProps) {
+    }
 }

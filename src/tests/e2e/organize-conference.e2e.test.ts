@@ -1,10 +1,9 @@
-import { addDays, addHours } from 'date-fns'
-import { Application } from 'express'
+import {addDays, addHours} from 'date-fns'
+import {Application} from 'express'
 import request from 'supertest'
-import { e2eUsers } from './seeds/user-e2e-seed'
-import { TestApp } from './utils/test-app'
+import {e2eUsers} from './seeds/user-e2e-seed'
+import {TestApp} from './utils/test-app'
 import amqp from "amqplib";
-import {e2eConferences} from "../../tests/e2e/seeds/conference-e2e-seed";
 
 describe('Usecase: Organize Conference', () => {
     let testApp: TestApp
@@ -27,7 +26,7 @@ describe('Usecase: Organize Conference', () => {
         await channel.assertQueue('conference-organized', {durable: false})
     })
 
-    afterAll(async() => {
+    afterAll(async () => {
         await testApp.tearDown()
         await channel.close()
         await connection.close()
@@ -35,14 +34,14 @@ describe('Usecase: Organize Conference', () => {
 
     it('should organize a conference', async () => {
         const response = await request(app)
-                                .post('/conference')
-                                .set('Authorization', authToken)
-                                .send({
-                                    title: "Ma nouvelle conference",
-                                    seats: 100,
-                                    startDate: addDays(new Date(), 4).toISOString(),
-                                    endDate: addDays(addHours(new Date(), 2), 4).toISOString()
-                                })
+            .post('/conference')
+            .set('Authorization', authToken)
+            .send({
+                title: "Ma nouvelle conference",
+                seats: 100,
+                startDate: addDays(new Date(), 4).toISOString(),
+                endDate: addDays(addHours(new Date(), 2), 4).toISOString()
+            })
 
         expect(response.status).toEqual(201)
         expect(response.body.data).toEqual({id: expect.any(String)})

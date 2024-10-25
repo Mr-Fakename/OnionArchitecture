@@ -1,9 +1,9 @@
-import { Model } from "mongoose"
-import { MongoBooking } from "../../infrastructure/database/mongo/mongo-booking"
-import { MongoBookingRepository } from "../../infrastructure/database/mongo/mongo-booking-repository"
-import { TestApp } from "../e2e/utils/test-app"
-import { testBookings } from "../unit/seeds/seeds-booking"
-import { randomUUID } from "crypto"
+import {Model} from "mongoose"
+import {MongoBooking} from "../../infrastructure/database/mongo/mongo-booking"
+import {MongoBookingRepository} from "../../infrastructure/database/mongo/mongo-booking-repository"
+import {TestApp} from "../e2e/utils/test-app"
+import {testBookings} from "../unit/seeds/seeds-booking"
+import {randomUUID} from "crypto"
 
 describe('MongoBookingRepository Integration', () => {
     let app: TestApp

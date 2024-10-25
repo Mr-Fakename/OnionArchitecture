@@ -1,13 +1,13 @@
-import { NextFunction, Request, Response } from "express";
-import { container } from "../../infrastructure/config/dependency-injection";
-import { ChangeDatesInputs, ChangeSeatsInputs, CreateConferenceInputs } from "../dto/conference.dto";
-import { RequestValidator } from "../utils/validate-request";
+import {NextFunction, Request, Response} from "express";
+import {container} from "../../infrastructure/config/dependency-injection";
+import {ChangeDatesInputs, ChangeSeatsInputs, CreateConferenceInputs} from "../dto/conference.dto";
+import {RequestValidator} from "../utils/validate-request";
 
 export const organizeConference = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const {input, errors} = await RequestValidator(CreateConferenceInputs, req.body)
 
-        if(errors) return res.jsonError(errors, 400)
+        if (errors) return res.jsonError(errors, 400)
 
         const result = await container('organizeConferenceUsecase').execute({
             user: req.user,
@@ -25,12 +25,12 @@ export const organizeConference = async (req: Request, res: Response, next: Next
 
 export const changeSeats = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { conferenceId } = req.params
+        const {conferenceId} = req.params
 
         const {input, errors} = await RequestValidator(ChangeSeatsInputs, req.body)
 
-        if(errors) return res.jsonError(errors, 400)
-        
+        if (errors) return res.jsonError(errors, 400)
+
         await container('changeSeatsUsecase').execute({
             seats: input.seats,
             conferenceId,
@@ -48,7 +48,7 @@ export const changeDates = async (req: Request, res: Response, next: NextFunctio
         const {conferenceId} = req.params
         const {input, errors} = await RequestValidator(ChangeDatesInputs, req.body)
 
-        if(errors) return res.jsonError(errors, 400)
+        if (errors) return res.jsonError(errors, 400)
 
         await container('changeDatesUsecase').execute({
             user: req.user,
@@ -69,7 +69,7 @@ export const bookConference = async (req: Request, res: Response, next: NextFunc
         const {conferenceId} = req.params
         const {errors} = req.body
 
-        if(errors) return res.jsonError(errors, 400)
+        if (errors) return res.jsonError(errors, 400)
 
         await container('bookSeatsUsecase').execute({
             conferenceId: conferenceId,

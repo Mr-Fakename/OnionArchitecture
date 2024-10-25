@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express"
+import {NextFunction, Request, Response} from "express"
 
 export interface ApiResponse {
     success: boolean
@@ -12,6 +12,7 @@ export interface ApiResponse {
 declare module 'express-serve-static-core' {
     interface Response {
         jsonSuccess(data: any, statusCode: number): void
+
         jsonError(error: any, statusCode: number): void
     }
 }

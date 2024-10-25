@@ -1,7 +1,7 @@
-import { addDays, addHours } from "date-fns";
-import { Conference } from "../../../domain/entities/conference.entity";
-import { ConferenceFixture } from "../fixtures/conference-fixture";
-import { e2eUsers } from "./user-e2e-seed";
+import {addDays, addHours} from "date-fns";
+import {Conference} from "../../../domain/entities/conference.entity";
+import {ConferenceFixture} from "../fixtures/conference-fixture";
+import {e2eUsers} from "./user-e2e-seed";
 
 export const e2eConferences = {
     conference: new ConferenceFixture(

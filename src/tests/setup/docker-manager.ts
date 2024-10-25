@@ -1,7 +1,7 @@
 import path from 'path'
-import { DockerComposeEnvironment, StartedDockerComposeEnvironment } from "testcontainers"
+import {DockerComposeEnvironment, StartedDockerComposeEnvironment} from "testcontainers"
 
-let instance : StartedDockerComposeEnvironment | null = null
+let instance: StartedDockerComposeEnvironment | null = null
 
 export const startDocker = async () => {
     const composeFilePath = path.resolve(__dirname)
@@ -9,11 +9,11 @@ export const startDocker = async () => {
 
     instance = await new DockerComposeEnvironment(composeFilePath, composeFile).up()
     console.log('\n✅ Docker compose instance is running');
-    
+
 }
 
 export const stopDocker = async () => {
-    if(!instance) return;
+    if (!instance) return;
 
     try {
         await instance.down()
@@ -25,7 +25,7 @@ export const stopDocker = async () => {
 }
 
 export const getDockerInstance = () => {
-    if(!instance) throw new Error('Docker compose instance is not running')
+    if (!instance) throw new Error('Docker compose instance is not running')
 
     return instance
 }

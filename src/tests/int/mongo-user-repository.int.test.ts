@@ -1,8 +1,8 @@
-import { Model } from "mongoose"
-import { MongoUser } from "../../infrastructure/database/mongo/mongo-user"
-import { MongoUserRepository } from "../../infrastructure/database/mongo/mongo-user-repository"
-import { TestApp } from "../e2e/utils/test-app"
-import { testUsers } from "../unit/seeds/seeds-user"
+import {Model} from "mongoose"
+import {MongoUser} from "../../infrastructure/database/mongo/mongo-user"
+import {MongoUserRepository} from "../../infrastructure/database/mongo/mongo-user-repository"
+import {TestApp} from "../e2e/utils/test-app"
+import {testUsers} from "../unit/seeds/seeds-user"
 
 
 describe('MongoUserRepository Integration', () => {

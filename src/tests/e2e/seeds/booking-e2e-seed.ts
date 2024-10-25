@@ -1,7 +1,7 @@
-import { Booking } from "../../../domain/entities/booking.entity";
-import { BookingFixture } from "../fixtures/booking-fixture";
-import { e2eConferences } from "./conference-e2e-seed";
-import { e2eUsers } from "./user-e2e-seed";
+import {Booking} from "../../../domain/entities/booking.entity";
+import {BookingFixture} from "../fixtures/booking-fixture";
+import {e2eConferences} from "./conference-e2e-seed";
+import {e2eUsers} from "./user-e2e-seed";
 
 
 export const e2eBookings = {

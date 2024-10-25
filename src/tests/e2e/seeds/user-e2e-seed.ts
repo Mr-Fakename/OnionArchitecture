@@ -1,5 +1,5 @@
-import { User } from "../../../domain/entities/user.entity";
-import { UserFixture } from "../fixtures/user-fixture";
+import {User} from "../../../domain/entities/user.entity";
+import {UserFixture} from "../fixtures/user-fixture";
 
 export const e2eUsers = {
     johnDoe: new UserFixture(

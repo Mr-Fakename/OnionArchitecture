@@ -1,13 +1,12 @@
-
-import { addDays, addHours } from 'date-fns'
-import { Application } from 'express'
+import {addDays, addHours} from 'date-fns'
+import {Application} from 'express'
 import request from 'supertest'
-import { container } from '../../infrastructure/config/dependency-injection'
-import { testConferences } from '../unit/seeds/seeds-conference'
-import { e2eConferences } from './seeds/conference-e2e-seed'
-import { e2eUsers } from './seeds/user-e2e-seed'
-import { TestApp } from './utils/test-app'
-import { e2eBookings } from './seeds/booking-e2e-seed'
+import {container} from '../../infrastructure/config/dependency-injection'
+import {testConferences} from '../unit/seeds/seeds-conference'
+import {e2eConferences} from './seeds/conference-e2e-seed'
+import {e2eUsers} from './seeds/user-e2e-seed'
+import {TestApp} from './utils/test-app'
+import {e2eBookings} from './seeds/booking-e2e-seed'
 
 describe('Usecase: Change Dates', () => {
     const conferenceRepository = container('conferenceRepository')
@@ -32,7 +31,7 @@ describe('Usecase: Change Dates', () => {
         authToken = await testApp.generateAuthToken(e2eUsers.johnDoe)
     })
 
-    afterAll(async() => {
+    afterAll(async () => {
         await testApp.tearDown()
     })
 
@@ -41,12 +40,12 @@ describe('Usecase: Change Dates', () => {
         const endDate = addDays(addHours(new Date(), 2), 4)
 
         const response = await request(app)
-                                .patch(`/conference/${testConferences.conference.props.id}/dates`)
-                                .set('Authorization', authToken)
-                                .send({
-                                    startDate, endDate
-                                })
-        
+            .patch(`/conference/${testConferences.conference.props.id}/dates`)
+            .set('Authorization', authToken)
+            .send({
+                startDate, endDate
+            })
+
         expect(response.status).toEqual(200)
 
         const fetchedConference = await conferenceRepository.findById(testConferences.conference.props.id)

@@ -1,12 +1,12 @@
-import { ChangeDates } from "../../usecases/change-dates"
-import { FixedDateGenerator } from "../fixed/fixed-date-generator"
-import { InMemoryBookingRepository } from "../in-memory/in-memory-booking-repository"
-import { InMemoryConferenceRepository } from "../in-memory/in-memory-conference-repository"
-import { InMemoryMailer } from "../in-memory/in-memory-mailer"
-import { InMemoryUserRepository } from "../in-memory/in-memory-user-repository"
-import { testBookings } from "./seeds/seeds-booking"
-import { testConferences } from "./seeds/seeds-conference"
-import { testUsers } from "./seeds/seeds-user"
+import {ChangeDates} from "../../usecases/change-dates"
+import {FixedDateGenerator} from "../fixed/fixed-date-generator"
+import {InMemoryBookingRepository} from "../in-memory/in-memory-booking-repository"
+import {InMemoryConferenceRepository} from "../in-memory/in-memory-conference-repository"
+import {InMemoryMailer} from "../in-memory/in-memory-mailer"
+import {InMemoryUserRepository} from "../in-memory/in-memory-user-repository"
+import {testBookings} from "./seeds/seeds-booking"
+import {testConferences} from "./seeds/seeds-conference"
+import {testUsers} from "./seeds/seeds-user"
 
 describe('Usecase: Change dates', () => {
     async function expectDatesNotChanged() {

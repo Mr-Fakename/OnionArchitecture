@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { changeDates, changeSeats, organizeConference, bookConference } from "../controllers/conference.controllers";
-import { isAuthenticated } from "../middlewares/authenticator.middleware";
+import {Router} from "express";
+import {bookConference, changeDates, changeSeats, organizeConference} from "../controllers/conference.controllers";
+import {isAuthenticated} from "../middlewares/authenticator.middleware";
 
 
 const router = Router()
@@ -11,4 +11,4 @@ router.patch('/conference/:conferenceId', changeSeats)
 router.patch('/conference/:conferenceId/dates', changeDates)
 router.post('/conference/:conferenceId/book', bookConference)
 
-export { router as ConferenceRoutes };
+export {router as ConferenceRoutes};

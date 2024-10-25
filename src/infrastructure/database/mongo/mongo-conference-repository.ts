@@ -1,7 +1,7 @@
-import { Model } from "mongoose";
-import { Conference } from "../../../domain/entities/conference.entity";
-import { IConferenceRepository } from "../../../interfaces/conference-repository.interface";
-import { MongoConference } from "./mongo-conference";
+import {Model} from "mongoose";
+import {Conference} from "../../../domain/entities/conference.entity";
+import {IConferenceRepository} from "../../../interfaces/conference-repository.interface";
+import {MongoConference} from "./mongo-conference";
 
 class ConferenceMapper {
     static toCore(document: MongoConference.ConferenceDocument): Conference {
@@ -15,7 +15,7 @@ class ConferenceMapper {
         })
     }
 
-    static toPersistence(conference: Conference) : MongoConference.ConferenceDocument {
+    static toPersistence(conference: Conference): MongoConference.ConferenceDocument {
         return new MongoConference.ConferenceModel({
             _id: conference.props.id,
             organizerId: conference.props.organizerId,
@@ -31,7 +31,8 @@ export class MongoConferenceRepository implements IConferenceRepository {
 
     constructor(
         private readonly model: Model<MongoConference.ConferenceDocument>
-    ) {}
+    ) {
+    }
 
     async create(conference: Conference): Promise<void> {
         const document = ConferenceMapper.toPersistence(conference)
@@ -40,7 +41,7 @@ export class MongoConferenceRepository implements IConferenceRepository {
 
     async findById(id: string): Promise<Conference | null> {
         const document = await this.model.findOne({_id: id})
-        if(!document) return null;
+        if (!document) return null;
         return ConferenceMapper.toCore(document)
     }
 

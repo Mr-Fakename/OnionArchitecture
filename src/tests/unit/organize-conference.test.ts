@@ -1,8 +1,8 @@
-import { OrganizeConference } from "../../usecases/organize-conference"
-import { FixedDateGenerator } from "../fixed/fixed-date-generator"
-import { FixedIDGenerator } from "../fixed/fixed-id-generator"
-import { InMemoryConferenceRepository } from "../in-memory/in-memory-conference-repository"
-import { testUsers } from "./seeds/seeds-user"
+import {OrganizeConference} from "../../usecases/organize-conference"
+import {FixedDateGenerator} from "../fixed/fixed-date-generator"
+import {FixedIDGenerator} from "../fixed/fixed-id-generator"
+import {InMemoryConferenceRepository} from "../in-memory/in-memory-conference-repository"
+import {testUsers} from "./seeds/seeds-user"
 import {InMemoryPublisher} from "../../tests/in-memory/in-memory-publisher";
 import {testConferences} from "../../tests/unit/seeds/seeds-conference";
 
@@ -35,7 +35,7 @@ describe('Usecase: Organize a conference', () => {
             const result = await usecase.execute(payload)
             expect(result.id).toEqual('id-1')
         })
-        
+
         it('should insert conference in db', async () => {
             await usecase.execute(payload)
             const fetchedConference = repository.database[0]
@@ -43,7 +43,7 @@ describe('Usecase: Organize a conference', () => {
             expect(fetchedConference.props.title).toEqual('Nouvelle conference')
         })
 
-        it ('should publish a message', async () => {
+        it('should publish a message', async () => {
             await usecase.execute(payload)
             const messages = messageBroker.getMessages('conference-organized')
             expect(messages).toHaveLength(1)
@@ -72,7 +72,8 @@ describe('Usecase: Organize a conference', () => {
         it('should not create a conference', async () => {
             try {
                 await usecase.execute(payload)
-            } catch (error) {}
+            } catch (error) {
+            }
 
             expect(repository.database).toHaveLength(0)
         })

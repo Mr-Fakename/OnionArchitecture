@@ -1,10 +1,10 @@
-import { Model } from "mongoose"
-import { TestApp } from "../e2e/utils/test-app"
-import { MongoConference } from "../../infrastructure/database/mongo/mongo-conference"
-import { MongoConferenceRepository } from "../../infrastructure/database/mongo/mongo-conference-repository"
-import { testConferences } from "../unit/seeds/seeds-conference"
-import { Conference } from "../../domain/entities/conference.entity"
-import { addDays } from "date-fns"
+import {Model} from "mongoose"
+import {TestApp} from "../e2e/utils/test-app"
+import {MongoConference} from "../../infrastructure/database/mongo/mongo-conference"
+import {MongoConferenceRepository} from "../../infrastructure/database/mongo/mongo-conference-repository"
+import {testConferences} from "../unit/seeds/seeds-conference"
+import {Conference} from "../../domain/entities/conference.entity"
+import {addDays} from "date-fns"
 
 describe('MongoConferenceRepository', () => {
     let app: TestApp

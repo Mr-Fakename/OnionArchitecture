@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, {Document, Schema} from "mongoose";
 
 export namespace MongoBooking {
     export const CollectionName = 'bookings'
@@ -10,9 +10,9 @@ export namespace MongoBooking {
     }
 
     export const BookingSchema = new Schema<BookingDocument>({
-        _id: { type: String, required: true },
-        conferenceId: { type: String, required: true },
-        userId: { type: String, required: true }
+        _id: {type: String, required: true},
+        conferenceId: {type: String, required: true},
+        userId: {type: String, required: true}
     })
 
     export const BookingModel = mongoose.model<BookingDocument>(CollectionName, BookingSchema)
